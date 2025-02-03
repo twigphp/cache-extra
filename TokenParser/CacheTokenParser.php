@@ -24,8 +24,7 @@ class CacheTokenParser extends AbstractTokenParser
     public function parse(Token $token): Node
     {
         $stream = $this->parser->getStream();
-        $expressionParser = $this->parser->getExpressionParser();
-        $key = $expressionParser->parseExpression();
+        $key = $this->parser->parseExpression();
 
         $ttl = null;
         $tags = null;
@@ -41,7 +40,7 @@ class CacheTokenParser extends AbstractTokenParser
             if ($stream->test(Token::PUNCTUATION_TYPE, ')')) {
                 throw new SyntaxError(\sprintf('The "%s" modifier takes exactly one argument (0 given).', $k), $line, $stream->getSourceContext());
             }
-            $arg = $expressionParser->parseExpression();
+            $arg = $this->parser->parseExpression();
             if ($stream->test(Token::PUNCTUATION_TYPE, ',')) {
                 throw new SyntaxError(\sprintf('The "%s" modifier takes exactly one argument (2 given).', $k), $line, $stream->getSourceContext());
             }
